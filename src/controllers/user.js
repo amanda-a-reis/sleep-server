@@ -21,6 +21,22 @@ export const signin = async (req, res) => {
     }
 }
 
+export const getSignin = async (req, res) => {
+    
+    try {
+        const existingUser = await User.findOne({ email: email })
+
+        if(!existingUser) return res.status(404).json({ message: 'User doesnt exist'})
+
+        const result = existingUser.name
+
+
+        res.status(200).json({result})
+    } catch (error) {
+        res.status(500).json({message: error})
+    }
+}
+
 export const signup = async (req, res) => {
     
     try {

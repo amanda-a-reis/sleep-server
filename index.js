@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 
 app.use('/sleep', sleepRoutes)
 app.use('/user', userRoutes)
-app.use('/user', userRoutes)
+
 
 
 const PORT = process.env.PORT || 5000
