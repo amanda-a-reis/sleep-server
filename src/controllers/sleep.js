@@ -15,15 +15,16 @@ export const createSleep = async (req, res) => {
 
 export const getSleep = async (req, res) => {
     try {
+        console.log('antes')
         const sleep = await Sleep.find().sort({ "date": -1 })
+        console.log('teste', sleep)
 
         const newSleep = sleep.map(data => {
             return calculateSleep(data)
         })
-    
-        res.status(200).json(newSleep)
+       return res.status(200).json(newSleep)
     } catch (error) {
-        res.status(404).json({ message: error.message })
+        return res.status(404).json({ message: error.message })
     }
 }
 
