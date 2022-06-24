@@ -3,9 +3,9 @@ import bcrypt from 'bcrypt'
 import User from '../models/user.js'
 
 export const signin = async (req, res) => {
-    const body = req.body
-
+    
     try {
+        const body = req.body
         const existingUser = await User.findOne({ email: body.email })
 
         if(!existingUser) return res.status(404).json({ message: 'User doesnt exist'})
@@ -22,9 +22,9 @@ export const signin = async (req, res) => {
 }
 
 export const signup = async (req, res) => {
-    const body = req.body
-
+    
     try {
+        const body = req.body
         const existingUser = await User.findOne({email: body.email})
         if(existingUser) return res.status(400).json({ message: 'User already exists'})
 
