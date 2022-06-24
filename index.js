@@ -3,16 +3,16 @@ import bodyParser from 'body-parser'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import sleepRoutes from './src/routes/sleep.js'
-import path from 'path'
-import { fileURLToPath } from 'url';
 import cors from 'cors'
 import userRoutes from './src/routes/users.js'
+import morgan from 'morgan'
 
 const app = express()
 
 dotenv.config({ path: "./.env" })
 
 app.use(cors('*'));
+app.use(morgan("dev"))
 
 app.use(bodyParser.urlencoded({
         extended: false
