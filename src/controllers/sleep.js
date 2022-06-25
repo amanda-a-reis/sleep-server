@@ -4,9 +4,9 @@ import Sleep from '../models/sleep.js'
 export const createSleep = async (req, res) => {
     try {
         const sleep = req.body
-        const hours = calculateSleep(sleep.data)
+        const hour = calculateSleep(sleep.data)
 
-        const newSleep = new Sleep({ date: sleep.data.date, sleepHour: sleep.data.sleepHour, wakeUpHour: sleep.data.wakeUpHour, user: sleep.data.user, hours })
+        const newSleep = new Sleep({ date: sleep.data.date, sleepHour: sleep.data.sleepHour, wakeUpHour: sleep.data.wakeUpHour, user: sleep.data.user, hour })
         await newSleep.save()
         
         res.status(201).json(newSleep)
