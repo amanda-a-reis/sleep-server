@@ -17,7 +17,7 @@ const sleepSchema = mongoose.Schema({
         type: String, 
         required: true
     },
-    hours: Number
+    hour: Number
 })
 
 export default mongoose.model("Sleep", sleepSchema)
