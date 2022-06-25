@@ -1,10 +1,23 @@
 import mongoose from 'mongoose'
 
 const sleepSchema = mongoose.Schema({
-    date: String,
-    sleepHour: String,
-    wakeUpHour: String,
-    user: String
+    date: {
+        type: String, 
+        required: true
+    },
+    sleepHour: {
+        type: String, 
+        required: true
+    },
+    wakeUpHour: {
+        type: String, 
+        required: true
+    },
+    user: {
+        type: String, 
+        required: true
+    },
+    hours: Number
 })
 
 export default mongoose.model("Sleep", sleepSchema)

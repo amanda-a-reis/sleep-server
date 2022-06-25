@@ -4,7 +4,9 @@ import Sleep from '../models/sleep.js'
 export const createSleep = async (req, res) => {
     try {
         const sleep = req.body
-        const newSleep = new Sleep({ date: sleep.data.date, sleepHour: sleep.data.sleepHour, wakeUpHour: sleep.data.wakeUpHour, user: sleep.data.user })
+        const hours = calculateSleep(sleep.data)
+
+        const newSleep = new Sleep({ date: sleep.data.date, sleepHour: sleep.data.sleepHour, wakeUpHour: sleep.data.wakeUpHour, user: sleep.data.user, hours })
         await newSleep.save()
         
         res.status(201).json(newSleep)
@@ -15,13 +17,17 @@ export const createSleep = async (req, res) => {
 
 export const getSleep = async (req, res) => {
     try {
-        console.log('antes')
-        const sleep = await Sleep.find().sort({ "date": -1 })
-        console.log('teste', sleep)
 
-        const newSleep = sleep.map(data => {
-            return calculateSleep(data)
-        })
+        const queryObj = {...req.query}
+
+        let queryStr = JSON.stringify(queryObj)
+        queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+
+        
+        const sleep = Sleep.find(JSON.parse(queryStr))
+        
+        const newSleep = await sleep
+
        return res.status(200).json(newSleep)
     } catch (error) {
         return res.status(404).json({ message: error.message })
@@ -50,7 +56,7 @@ export function calculateSleep(data) {
     if (minutes < 0)
         minutes * -1
 
-    hour = (hour + minutes / 60).toFixed(2)
+    hour = (hour + minutes / 60).toFixed(0)
 
-    return { date: data.date, sleepHour: data.sleepHour, wakeUpHour: data.wakeUpHour, hour, user: data.user }
+    return hour
 }
