@@ -38,7 +38,7 @@ describe('/api/users/auth', () => {
         .send({
             firstName: 'user',
             lastName: 'user',
-            email: 'email2@mail.com',
+            email: 'testando_email@mail.com',
             password: 'password123',
             confirmPassword: 'password123'
           })
@@ -49,10 +49,10 @@ describe('/api/users/auth', () => {
       });
       it('deve retornar código 200 quando o usuário tentar fazer login', async () => {
         const res = await request(server)
-        .post('/user/signup')
+        .post('/user/signin')
         .send({
-            email: 'email@mail.com',
-            password: 'password123'
+            email: 'teste@mail.com',
+            password: '123'
           })
         .expect(response => {console.log(response)})
         
