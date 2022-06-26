@@ -24,10 +24,12 @@ export const getSleep = async (req, res) => {
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
 
         
-        let query = Sleep.find(JSON.parse(queryStr)).sort({date: -1})
+        let query = Sleep.find(req.query.user).sort({date: -1})
 
-        query = Sleep.find(req.query.user)
-        
+        if(queryStr) {
+            query = query.find(JSON.parse(queryStr))
+        }
+
         const page = req.query.page * 1 || 1
         const limit = req.query.limit * 1 || 100
         const skip = (page - 1) * limit
