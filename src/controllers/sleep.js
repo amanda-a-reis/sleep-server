@@ -24,9 +24,22 @@ export const getSleep = async (req, res) => {
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
 
         
-        const sleep = Sleep.find(JSON.parse(queryStr)).sort({date: -1})
+        const query = Sleep.find(JSON.parse(queryStr)).sort({date: -1})
+
+        query = Sleep.find(req.query.user)
         
-        const newSleep = await sleep
+        const page = req.query.page * 1 || 1
+        const limit = req.query.limit * 1 || 100
+        const skip = (page - 1) * limit
+
+        query.skip(skip).limit(limit)
+
+        if(req.query.page) {
+            const numSleeps = await Sleep.countDocuments()
+            if(skip >= numSleeps) throw new Error('This page does not exist')
+        }
+        
+        const newSleep = await query
 
        return res.status(200).json(newSleep)
     } catch (error) {
