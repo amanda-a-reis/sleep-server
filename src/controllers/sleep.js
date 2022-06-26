@@ -24,7 +24,7 @@ export const getSleep = async (req, res) => {
         queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
 
         
-        let query = Sleep.find(req.query.user).sort({date: -1})
+        let query = Sleep.find({email: req.query.user}).sort({date: -1})
 
         if(queryStr) {
             query = query.find(JSON.parse(queryStr))
