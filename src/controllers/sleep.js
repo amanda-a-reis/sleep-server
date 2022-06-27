@@ -75,3 +75,17 @@ export function calculateSleep(data) {
 
     return hour
 }
+
+export const deleteSleep = async (req, res) => {
+    try {
+        const id = req.params.id
+
+        if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send('No user with this ID')
+
+        await Sleep.findByIdAndRemove(id)
+
+       return res.status(200).json({message: 'Dados deletados'})
+    } catch (error) {
+        return res.status(404).json({ message: error.message })
+    }
+}
