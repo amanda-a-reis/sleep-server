@@ -14,13 +14,13 @@ export const signin = async (req, res) => {
 
     try {
 
-        const { email, password } = req.body
-        const existingUser = await User.findOne({ email: email }).select('+password')
+        const { data } = req.body
+        const existingUser = await User.findOne({ email: data.email }).select('+password')
 
         if (!existingUser) return res.status(404).json({ message: 'User doesnt exist' })
 
 
-        const isPasswordCorrent = await bcrypt.compare(password, existingUser.password)
+        const isPasswordCorrent = await bcrypt.compare(data.password, existingUser.password)
 
         if (!isPasswordCorrent) return res.status(400).json({ message: 'Invalid Credentials' })
 
@@ -47,19 +47,19 @@ export const signin = async (req, res) => {
 export const signup = async (req, res) => {
 
     try {
-        const { firstName, lastName, email, password, confirmPassword, passwordChangedAt } = req.body
+        const { data } = req.body
 
-        const existingUser = await User.findOne({ email: email })
+        const existingUser = await User.findOne({ email: data.email })
         if (existingUser) return res.status(400).json({ message: 'User already exists' })
 
-        if (password !== confirmPassword) return res.status(400).json({ message: 'Passwords dont match' })
+        if (data.password !== data.confirmPassword) return res.status(400).json({ message: 'Passwords dont match' })
 
-        const validPassword = validator.isStrongPassword(password)
+        const validPassword = validator.isStrongPassword(data.password)
 
         if (validPassword) {
-            const hashedPassoword = await bcrypt.hash(password, 12)
+            const hashedPassoword = await bcrypt.hash(data.password, 12)
 
-            const result = await User.create({ email: email, password: hashedPassoword, name: `${firstName} ${lastName}`, passwordChangedAt: passwordChangedAt })
+            const result = await User.create({ email: data.email, password: hashedPassoword, name: `${data.firstName} ${data.lastName}`, passwordChangedAt: data.passwordChangedAt })
 
             const token = signToken(result._id)
 
