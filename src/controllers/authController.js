@@ -46,7 +46,7 @@ export const forgotPassword = async (req, res, next) => {
         const resetToken = user.createPasswordResetToken()
         await user.save({ validateBeforeSave: false })
 
-        const resetURL = `${req.protocol}://${req.get('host')}/user/resetPassword/${resetToken}`
+        const resetURL = `https://sleep-project.netlify.app/user/resetPassword/${resetToken}`
 
         const message = `Esqueceu sua senha? Envie um pedido de alteração com a nova senha e sua confirmação para: ${resetURL}`
 
