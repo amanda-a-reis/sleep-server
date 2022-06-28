@@ -9,7 +9,7 @@ router.post('/signin', cors(),  signin)
 router.post('/signup', cors(), signup)
 router.delete('/signin/:id', protect, deleteAccount)
 
-router.post('/forgotPassword', protect, forgotPassword)
+router.post('/forgotPassword', forgotPassword)
 router.patch('/resetPassword/:token', protect, resetPassword)
 
 
