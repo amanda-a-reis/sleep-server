@@ -85,6 +85,7 @@ export const resetPassword = async (req, res, next) => {
     }
 
     const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
+    console.log(req.params.token)
     console.log(hashedToken)
     const user = await User.findOne({
         passwordResetToken: hashedToken,
@@ -112,7 +113,7 @@ export const resetPassword = async (req, res, next) => {
             }
             res.cookie('jwt', token, cookieOptions)
 
-            result.password = undefined
+            user.password = undefined
 
             res.status(201).json({
                 status: 'success',
