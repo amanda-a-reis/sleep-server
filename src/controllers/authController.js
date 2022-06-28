@@ -4,6 +4,7 @@ import User from "../models/user.js"
 import { sendEmail } from "../utils/email.js"
 import { signToken } from "./user.js"
 import crypto from 'crypto'
+import bcrypt from 'bcrypt'
 
 export const protect = async (req, res, next) => {
 
@@ -92,27 +93,31 @@ export const resetPassword = async (req, res, next) => {
         return res.status(400).json({ message: 'Token invalido ou expirado' })
     }
 
-    user.password = req.body.password
-    user.passwordConfirm = req.body.passwordConfirm
     user.passwordResetToken = undefined
     user.passwordResetExpires = undefined
-    await user.save()
+  
+    const validPassword = validator.isStrongPassword(req.body.password)
 
-    const token = signToken(user._id)
+        if (validPassword) {
+            const hashedPassoword = await bcrypt.hash(req.body.password, 12)
+            user.password = hashedPassoword
+            await user.save()
 
-    const cookieOptions = {
-        expires: new Date((Date.now() - (180 * 60 * 1000)) + process.env.JWT_COOKIE_EXPIRES_IN * 60 * 60 * 1000),
-        httpOnly: true
-    }
+            const token = signToken(user._id)
 
-    res.cookie('jwt', token, cookieOptions)
+            const cookieOptions = {
+                expires: new Date((Date.now() - (180 * 60 * 1000)) + process.env.JWT_COOKIE_EXPIRES_IN * 60 * 60 * 1000),
+                httpOnly: true
+            }
+            res.cookie('jwt', token, cookieOptions)
 
-    user.password = undefined
+            result.password = undefined
 
-    res.status(200).json({
-        status: 'success',
-        token
-    })
+            res.status(201).json({
+                status: 'success',
+                token,
+            })
+        }
 
 }
 
