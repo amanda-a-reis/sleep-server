@@ -3,16 +3,16 @@ import nodemailer from 'nodemailer'
 export const sendEmail = async options => {
     try {
         const transporter = nodemailer.createTransport({
-            service: "Outlook365",
+            service: "SendGrid",
             auth: {
-                user: process.env.EMAIL_USERNAME,
-                pass: process.env.EMAIL_PASSWORD,
+                user: process.env.SENDGRID_USERNAME,
+                pass: process.env.SENDGRID_PASSWORD,
             },
 
         })
 
         const mailOptions = {
-            from: 'Sleep <sleepproject2022@outlook.pt>',
+            from: 'Sleep <thesleepprojectbrazil@gmail.com>',
             to: options.email,
             subject: options.subject,
             text: options.message

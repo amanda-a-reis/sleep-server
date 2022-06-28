@@ -5,6 +5,7 @@ import { sendEmail } from "../utils/email.js"
 import { signToken } from "./user.js"
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import validator from "validator"
 
 export const protect = async (req, res, next) => {
 
