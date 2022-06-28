@@ -10,7 +10,7 @@ router.post('/signup', cors(), signup)
 router.delete('/signin/:id', protect, deleteAccount)
 
 router.post('/forgotPassword', forgotPassword)
-router.patch('/resetPassword/:token', protect, resetPassword)
+router.patch('/resetPassword/:token', resetPassword)
 
 
 
